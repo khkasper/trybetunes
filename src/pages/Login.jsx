@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { createUser } from '../services/userAPI';
 import Loading from './Loading';
+import Header from '../components/Header';
 
 const MIN_LENGTH = 3;
 
@@ -39,6 +40,7 @@ export default class Login extends Component {
     if (redirect) return <Redirect to="/search" />;
     return (
       <div data-testid="page-login">
+        <Header />
         <form>
           <label htmlFor="name">
             <input
