@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
+import searchAlbumsAPI from '../services/searchAlbumsAPI';
+import Loading from '../components/Loading';
+import Albums from '../components/Albums';
 
 const MIN_LENGTH = 2;
 
@@ -8,6 +11,10 @@ export default class Search extends Component {
     super(props);
     this.state = {
       artist: '',
+      search: '',
+      albums: [],
+      loading: false,
+      result: false,
     };
   }
 
@@ -17,12 +24,25 @@ export default class Search extends Component {
     });
   }
 
-  handleClick = () => {
-    console.log('.');
+  handleClick = async () => {
+    const { artist } = this.state;
+    this.setState({
+      loading: true,
+      search: artist,
+    });
+    const albums = await searchAlbumsAPI(artist);
+    if (albums) {
+      this.setState({
+        albums,
+        artist: '',
+        loading: false,
+        result: true,
+      });
+    }
   }
 
   render() {
-    const { artist } = this.state;
+    const { artist, search, albums, loading, result } = this.state;
     return (
       <div data-testid="page-search">
         <Header />
@@ -46,6 +66,8 @@ export default class Search extends Component {
             </button>
           </label>
         </form>
+        { loading && <Loading /> }
+        { result && <Albums artist={ search } albums={ albums } /> }
       </div>
     );
   }
