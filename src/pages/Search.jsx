@@ -10,64 +10,67 @@ export default class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      albums: null,
       artist: '',
-      search: '',
-      albums: [],
       loading: false,
-      result: false,
+      search: '',
     };
   }
 
-  handleChange = ({ target: { value } }) => {
+  handleChange = ({ target: { name, value } }) => {
     this.setState({
-      artist: value,
+      [name]: value,
     });
   }
 
-  handleClick = async () => {
-    const { artist } = this.state;
+  handleClick = () => {
+    const { search } = this.state;
     this.setState({
       loading: true,
-      search: artist,
-    });
-    const albums = await searchAlbumsAPI(artist);
-    if (albums) {
-      this.setState({
+    },
+    async () => {
+      const albums = await searchAlbumsAPI(search);
+      this.setState((prevState) => ({
         albums,
-        artist: '',
+        artist: prevState.search,
         loading: false,
-        result: true,
-      });
-    }
+        search: '',
+      }));
+    });
   }
 
   render() {
-    const { artist, search, albums, loading, result } = this.state;
+    const { albums, artist, loading, search } = this.state;
+    if (loading) {
+      return (
+        <div data-testid="page-search">
+          <Header />
+          <Loading />
+        </div>
+      );
+    }
     return (
       <div data-testid="page-search">
         <Header />
         <form>
-          <label htmlFor="artist">
-            <input
-              type="text"
-              data-testid="search-artist-input"
-              name="artist"
-              value={ artist }
-              placeholder="Nome do artista ou banda"
-              onChange={ this.handleChange }
-            />
-            <button
-              data-testid="search-artist-button"
-              type="submit"
-              disabled={ artist.length < MIN_LENGTH }
-              onClick={ this.handleClick }
-            >
-              Pesquisar
-            </button>
-          </label>
+          <input
+            type="text"
+            data-testid="search-artist-input"
+            name="search"
+            value={ search }
+            placeholder="Nome do artista ou banda"
+            onChange={ this.handleChange }
+          />
+          <button
+            data-testid="search-artist-button"
+            type="button"
+            disabled={ search.length < MIN_LENGTH }
+            onClick={ this.handleClick }
+          >
+            Pesquisar
+          </button>
         </form>
-        { loading && <Loading /> }
-        { result && <Albums artist={ search } albums={ albums } /> }
+        { albums && <Albums artist={ artist } albums={ albums } /> }
       </div>
     );
   }
