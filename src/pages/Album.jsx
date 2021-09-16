@@ -43,12 +43,10 @@ export default class Album extends Component {
           </h5>
         </div>
         <div>
-          { songs.slice(1)
-            .map(({ trackName, previewUrl }, key) => (<MusicCard
-              key={ key }
-              trackName={ trackName }
-              previewUrl={ previewUrl }
-            />))}
+          { songs.slice(1).map((song, key) => (<MusicCard
+            key={ key }
+            song={ song }
+          />))}
         </div>
       </main>
     );
