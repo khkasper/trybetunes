@@ -20,13 +20,13 @@ export default class Albums extends React.Component {
           artworkUrl100,
         }) => (
           <div key={ collectionName }>
-            <img src={ artworkUrl100 } alt={ collectionName } />
             <p>{ artistName }</p>
             <Link
               to={ `/album/${collectionId}` }
               data-testid={ `link-to-album-${collectionId}` }
             >
-              { collectionName }
+              <img src={ artworkUrl100 } alt={ collectionName } />
+              <p>{ collectionName }</p>
             </Link>
           </div>
         ))}

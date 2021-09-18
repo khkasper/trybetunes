@@ -4,6 +4,7 @@ import getMusics from '../services/musicsAPI';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
 import MusicCard from '../components/MusicCard';
+import { getFavoriteSongs, addSong, removeSong } from '../services/favoriteSongsAPI';
 
 export default class Album extends Component {
   constructor(props) {
@@ -11,30 +12,60 @@ export default class Album extends Component {
     this.state = {
       loading: true,
       songs: [],
+      favorites: [],
     };
   }
 
   componentDidMount() {
+    this.fetchSongs();
+    this.fetchFavorites();
+  }
+
+  handleFavorite = ({ target }, song) => {
+    const funcUpdate = target.checked ? addSong : removeSong;
+    this.setState({
+      loading: true,
+    }, async () => {
+      await funcUpdate(song);
+      await this.fetchFavorites();
+      this.setState({
+        loading: false,
+      });
+    });
+  }
+
+  fetchSongs = async () => {
     const { match: { params: { id } } } = this.props;
-    getMusics(id).then((songs) => this.setState({
+    const songs = await getMusics(id);
+    this.setState({
       loading: false,
       songs,
-    }));
+    });
+  }
+
+  fetchFavorites = async () => {
+    const favorite = await getFavoriteSongs();
+    this.setState({ favorites: favorite });
   }
 
   render() {
-    const { loading, songs } = this.state;
-    if (loading) return <Loading />;
+    const { loading, songs, favorites } = this.state;
+    if (loading) {
+      return (
+        <div data-testid="page-album">
+          <Header />
+          <Loading />
+        </div>
+      );
+    }
     return (
-      <main data-testid="page-album">
+      <div data-testid="page-album">
         <Header />
         <div>
-          <div>
-            <img
-              src={ songs[0].artworkUrl100 }
-              alt={ songs[0].artistName }
-            />
-          </div>
+          <img
+            src={ songs[0].artworkUrl100 }
+            alt={ songs[0].artistName }
+          />
           <h5 data-testid="artist-name">
             { songs[0].artistName }
           </h5>
@@ -46,9 +77,11 @@ export default class Album extends Component {
           { songs.slice(1).map((song, key) => (<MusicCard
             key={ key }
             song={ song }
+            onChange={ this.handleFavorite }
+            checked={ favorites.some((music) => music.trackId === song.trackId) }
           />))}
         </div>
-      </main>
+      </div>
     );
   }
 }
