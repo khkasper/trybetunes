@@ -36,7 +36,6 @@ export default class Albums extends React.Component {
 }
 
 Albums.propTypes = {
-
   albums: PropTypes.arrayOf(PropTypes.object).isRequired,
   artist: PropTypes.string.isRequired,
 };

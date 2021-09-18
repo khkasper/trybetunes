@@ -5,7 +5,6 @@ export default class MusicCard extends Component {
   render() {
     const { song, onChange, checked } = this.props;
     const { trackName, previewUrl, trackId } = song;
-
     return (
       <div>
         <h3>{ trackName }</h3>
@@ -16,14 +15,19 @@ export default class MusicCard extends Component {
           <code>audio</code>
           .
         </audio>
-        <input
+        <label
           data-testid={ `checkbox-music-${trackId}` }
-          type="checkbox"
-          id={ trackId }
-          value={ trackId }
-          checked={ checked }
-          onChange={ (event) => onChange(event, song) }
-        />
+          htmlFor={ trackId }
+        >
+          Favorita
+          <input
+            type="checkbox"
+            id={ trackId }
+            value={ trackId }
+            checked={ checked }
+            onChange={ (event) => onChange(event, song) }
+          />
+        </label>
       </div>
     );
   }

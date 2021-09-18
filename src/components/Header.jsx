@@ -6,7 +6,6 @@ import { getUser } from '../services/userAPI';
 export default class Header extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       user: {},
       loading: true,
@@ -40,7 +39,6 @@ export default class Header extends Component {
         <p data-testid="header-user-name">
           { name }
         </p>
-
       </header>
     );
   }
