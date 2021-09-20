@@ -24,10 +24,13 @@ export default class Profile extends Component {
       loading: false,
       user,
     });
-  }
+  };
 
   render() {
-    const { user: { description, email, image, name }, loading } = this.state;
+    const {
+      user: { description, email, image, name },
+      loading,
+    } = this.state;
     if (loading) {
       return (
         <div data-testid="page-profile">
@@ -40,20 +43,14 @@ export default class Profile extends Component {
       <div data-testid="page-profile">
         <Header />
         <main>
-          <img
-            data-testid="profile-image"
-            alt={ name }
-            src={ image }
-          />
-          <Link to="/profile/edit">
-            Editar perfil
-          </Link>
+          <img data-testid="profile-image" alt={ name } src={ image } />
+          <Link to="/profile/edit">Editar perfil</Link>
           <p>Nome</p>
-          <p>{ name }</p>
+          <p>{name}</p>
           <p>E-mail</p>
-          <p>{ email }</p>
+          <p>{email}</p>
           <p>Descrição</p>
-          <p>{ description }</p>
+          <p>{description}</p>
         </main>
       </div>
     );

@@ -17,20 +17,17 @@ export default class Login extends Component {
   }
 
   handleChange = ({ target: { name, value } }) => {
-    this.setState({
-      [name]: value,
-    });
+    this.setState({ [name]: value });
   }
 
-  handleClick = async () => {
+  handleClick = () => {
     const { name } = this.state;
-    this.setState({
-      loading: true,
-    });
-    await createUser({ name });
-    this.setState({
-      redirect: true,
-      loading: false,
+    this.setState({ loading: true }, async () => {
+      await createUser({ name });
+      this.setState({
+        redirect: true,
+        loading: false,
+      });
     });
   }
 

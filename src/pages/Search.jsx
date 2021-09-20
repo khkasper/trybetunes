@@ -18,17 +18,12 @@ export default class Search extends Component {
   }
 
   handleChange = ({ target: { name, value } }) => {
-    this.setState({
-      [name]: value,
-    });
+    this.setState({ [name]: value });
   }
 
   handleClick = () => {
     const { search } = this.state;
-    this.setState({
-      loading: true,
-    },
-    async () => {
+    this.setState({ loading: true }, async () => {
       const albums = await searchAlbumsAPI(search);
       this.setState((prevState) => ({
         albums,

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-export default class Albums extends React.Component {
+export default class Albums extends Component {
   render() {
     const { artist, albums } = this.props;
     if (!albums.length) {

@@ -18,30 +18,24 @@ export default class Favorites extends Component {
   }
 
   handleChange = (_, song) => {
-    this.setState(
-      { loading: true },
-      async () => {
-        await removeSong(song);
-        const favorites = await getFavoriteSongs();
-        this.setState(
-          { favorites },
-          () => this.setState({ loading: false }),
-        );
-      },
-    );
+    this.setState({ loading: true }, async () => {
+      await removeSong(song);
+      const favorites = await getFavoriteSongs();
+      this.setState({
+        loading: false,
+        favorites,
+      });
+    });
   };
 
   fetchFavorites = () => {
-    this.setState(
-      { loading: true },
-      async () => {
-        const favorites = await getFavoriteSongs();
-        this.setState({
-          loading: false,
-          favorites,
-        });
-      },
-    );
+    this.setState({ loading: true }, async () => {
+      const favorites = await getFavoriteSongs();
+      this.setState({
+        loading: false,
+        favorites,
+      });
+    });
   }
 
   render() {

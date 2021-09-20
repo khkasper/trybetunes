@@ -30,23 +30,21 @@ export default class ProfileEdit extends Component {
       image,
       description,
     });
-  }
+  };
 
   handleChange = ({ target }) => {
     const { name, value } = target;
-    this.setState({
-      [name]: value,
-    });
-  }
+    this.setState({ [name]: value });
+  };
 
   handleClick = () => {
     const { name, email, description, image } = this.state;
     const user = { name, email, description, image };
-    this.setState({ loading: true });
-    updateUser(user).then(() => this.setState({
-      redirect: true,
-    }));
-  }
+    this.setState({ loading: true }, async () => {
+      await updateUser(user);
+      this.setState({ redirect: true });
+    });
+  };
 
   render() {
     const { description, email, image, name, loading, redirect } = this.state;

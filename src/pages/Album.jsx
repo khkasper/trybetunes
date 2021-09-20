@@ -23,14 +23,10 @@ export default class Album extends Component {
 
   handleFavorite = ({ target }, song) => {
     const funcUpdate = target.checked ? addSong : removeSong;
-    this.setState({
-      loading: true,
-    }, async () => {
+    this.setState({ loading: true }, async () => {
       await funcUpdate(song);
       await this.fetchFavorites();
-      this.setState({
-        loading: false,
-      });
+      this.setState({ loading: false });
     });
   }
 
